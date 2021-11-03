@@ -4,6 +4,10 @@
 
     <data>
         <variable
+            name="adapter"
+            type="com.example.noteapp.feature_note.domain.adapter.NotesAdapter" />
+
+        <variable
             name="viewmodel"
             type="com.example.noteapp.feature_note.presentation.screen_notes_list.NotesViewModel" />
     </data>
@@ -106,6 +110,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:adapter="@{adapter}"
                 android:items="@{viewmodel.state.notes}"
                 android:viewModel="@{viewmodel}"/>
 

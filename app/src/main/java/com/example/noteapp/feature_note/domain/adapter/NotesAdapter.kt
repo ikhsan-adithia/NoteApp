@@ -36,39 +36,58 @@ class NotesAdapter: RecyclerView.Adapter<NotesAdapter.NotesViewHolder>() {
         val note = differ.currentList[position]
 
         holder.binding.note = note
-        holder.binding.executePendingBindings()
-
-        holder.itemView.setOnClickListener {
-            onItemClickListener?.let { it(note) }
+        holder.binding.apply {
+            note.id?.let { noteId ->
+                root.setOnClickListener {
+                    onItemClickListener?.let { it(noteId) }
+                }
+            }
+            btnDelete.setOnClickListener {
+                onItemDeleteClickListener?.let { it(note) }
+            }
         }
+
+        holder.binding.executePendingBindings()
     }
 
     override fun getItemCount(): Int {
         return differ.currentList.size
     }
 
-    private var onItemClickListener: ((Note) -> Unit)? = null
-    fun setOnItemClickListener(listener: (Note) -> Unit) {
+    private var onItemDeleteClickListener: ((Note) -> Unit)? = null
+    fun setOnItemDeleteClickListener(listener: (Note) -> Unit) {
+        onItemDeleteClickListener = listener
+    }
+
+    private var onItemClickListener: ((Int) -> Unit)? = null
+    fun setOnItemClickListener(listener: (Int) -> Unit) {
         onItemClickListener = listener
     }
+
+    companion object {
+        fun instance() = NotesAdapter()
+    }
 }
 
-@BindingAdapter("android:items", "android:viewModel")
-fun items(recyclerView: RecyclerView, itemViewModels: List<Note>, viewModel:NotesViewModel) {
-    val adapter = getOrCreateAdapter(recyclerView)
-    adapter.differ.submitList(itemViewModels)
+@BindingAdapter("android:items", "android:adapter", "android:viewModel")
+fun items(recyclerView: RecyclerView, itemViewModels: List<Note>, notesAdapter: NotesAdapter, viewModel:NotesViewModel) {
+//    val adapter = getOrCreateAdapter(recyclerView)
+    recyclerView.adapter = notesAdapter
+    notesAdapter.differ.submitList(itemViewModels)
 
-    adapter.setOnItemClickListener { note ->
+    notesAdapter.setOnItemDeleteClickListener { note ->
         viewModel.onEvent(NotesEvent.DeleteNote(note))
     }
+
+
 }
 
-private fun getOrCreateAdapter(recyclerView: RecyclerView): NotesAdapter {
-    return if (recyclerView.adapter != null && recyclerView.adapter is NotesAdapter) {
-        recyclerView.adapter as NotesAdapter
-    } else {
-        val notesAdapter = NotesAdapter()
-        recyclerView.adapter = notesAdapter
-        notesAdapter
-    }
-}
+//private fun getOrCreateAdapter(recyclerView: RecyclerView): NotesAdapter {
+//    return if (recyclerView.adapter != null && recyclerView.adapter is NotesAdapter) {
+//        recyclerView.adapter as NotesAdapter
+//    } else {
+//        val notesAdapter = NotesAdapter()
+//        recyclerView.adapter = notesAdapter
+//        notesAdapter
+//    }
+//}

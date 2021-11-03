@@ -7,4 +7,12 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="success">#03BC47</color>
+    <color name="failed">#CC1010</color>
+
+    <!--    Radio Color Option-->
+    <color name="rb_blue">#2196F3</color>
+    <color name="rb_purple">#673AB7</color>
+    <color name="rb_green">#4CAF50</color>
+    <color name="rb_magenta">#EC1E64</color>
 </resources>

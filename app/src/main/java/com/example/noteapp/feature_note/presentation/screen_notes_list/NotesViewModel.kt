@@ -1,20 +1,17 @@
 package com.example.noteapp.feature_note.presentation.screen_notes_list
 
-import android.util.Log
 import android.widget.RadioGroup
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.noteapp.R
+import com.example.noteapp.core.util.UiEvent
 import com.example.noteapp.feature_note.domain.model.Note
 import com.example.noteapp.feature_note.domain.use_case.NoteUseCases
 import com.example.noteapp.feature_note.domain.util.NoteOrder
 import com.example.noteapp.feature_note.domain.util.OrderType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -25,6 +22,9 @@ class NotesViewModel @Inject constructor(
 
     private val _state = MutableStateFlow(NotesState())
     val state: StateFlow<NotesState> = _state
+
+    private val _uiEvent = MutableSharedFlow<UiEvent>()
+    val uiEvent = _uiEvent.asSharedFlow()
 
     private var recentlyDeletedNote: Note? = null
 
@@ -48,6 +48,7 @@ class NotesViewModel @Inject constructor(
                 viewModelScope.launch {
                     noteUseCases.deleteNoteUseCase(event.note)
                     recentlyDeletedNote = event.note
+                    _uiEvent.emit(UiEvent.ShowSnackbar("Note deleted"))
                 }
             }
             is NotesEvent.RestoreNote -> {
