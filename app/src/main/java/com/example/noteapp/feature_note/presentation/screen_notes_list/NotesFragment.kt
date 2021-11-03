@@ -54,6 +54,7 @@ class NotesFragment: Fragment(R.layout.fragment_notes) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        Log.e("log", "onViewCreated")
         notesAdapter?.setOnItemClickListener { noteId ->
             Log.e("log", "onViewCreated: $noteId")
 //            findNavController().navigate(

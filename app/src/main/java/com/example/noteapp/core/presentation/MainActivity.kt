@@ -3,6 +3,7 @@ package com.example.noteapp.core.presentation
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.commit
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.example.noteapp.R
@@ -28,11 +29,11 @@ class MainActivity : AppCompatActivity() {
 
 //            supportFragmentManager.commit {
 //                notesFragment?.let { fragment ->
-//                    add(R.id.fc_main, fragment)
+//                    add(R.id.fragmentContainerView, fragment)
 //                }
 //            }
             val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
-                navController = navHostFragment.navController
+            navController = navHostFragment.navController
         }
 
 
