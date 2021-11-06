@@ -1,15 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewmodel"
+            type="com.example.noteapp.feature_note.presentation.screen_add_edit_note.AddEditViewModel" />
+    </data>
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="30dp">
+        android:background="@color/white"
+        android:clickable="true"
+        android:paddingTop="30dp"
+        android:focusable="true">
 
         <RadioGroup
+            android:id="@+id/rg_colors_option"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:noteColor="@{viewmodel.noteColor}"
             android:orientation="horizontal">
 
             <View
@@ -18,10 +30,10 @@
                 android:layout_height="match_parent" />
 
             <RadioButton
+                android:id="@+id/rb_blue"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:background="@drawable/rb_color_blue"
-                android:checked="true"
                 android:button="@null" />
 
             <View
@@ -30,6 +42,7 @@
                 android:layout_height="match_parent" />
 
             <RadioButton
+                android:id="@+id/rb_purple"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:background="@drawable/rb_color_purple"
@@ -41,6 +54,7 @@
                 android:layout_height="match_parent" />
 
             <RadioButton
+                android:id="@+id/rb_green"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:background="@drawable/rb_color_green"
@@ -52,6 +66,7 @@
                 android:layout_height="match_parent" />
 
             <RadioButton
+                android:id="@+id/rb_magenta"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:background="@drawable/rb_color_magenta"
@@ -63,6 +78,21 @@
                 android:layout_height="match_parent" />
 
         </RadioGroup>
+
+        <EditText
+            android:id="@+id/tv_noteTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:setText="@{viewmodel.state.note.title}"
+            android:hint="Note title..." />
+
+        <EditText
+            android:id="@+id/tv_noteContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:setText="@{viewmodel.state.note.content}"
+            android:hint="Note content..." />
 
     </LinearLayout>
 

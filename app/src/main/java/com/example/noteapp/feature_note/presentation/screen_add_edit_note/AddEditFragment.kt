@@ -8,13 +8,20 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.example.noteapp.R
 import com.example.noteapp.databinding.FragmentAddEditBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class AddEditFragment: Fragment(R.layout.fragment_add_edit) {
 
     private var _binding: FragmentAddEditBinding? = null
     private val binding get() = _binding!!
+
+    private val viewModel by viewModels<AddEditViewModel>()
 
     override fun onDestroyView() {
         _binding = null
@@ -26,17 +33,11 @@ class AddEditFragment: Fragment(R.layout.fragment_add_edit) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_add_edit, container, false)
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        arguments?.getInt("noteId", -1)?.let {
-            Log.e("AddEditFragment", "onViewCreated: noteId $it")
-            Toast.makeText(requireContext(), "onViewCreated: noteId $it", Toast.LENGTH_SHORT).show()
+        _binding = DataBindingUtil.inflate<FragmentAddEditBinding>(inflater, R.layout.fragment_add_edit, container, false).apply {
+            lifecycleOwner = viewLifecycleOwner
+            viewmodel = viewModel
         }
+        return binding.root
     }
 
     companion object {
