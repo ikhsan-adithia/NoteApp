@@ -1,6 +1,5 @@
 package com.example.noteapp.feature_note.presentation.screen_notes_list
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,14 +11,12 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.noteapp.R
-import com.example.noteapp.core.domain.Routes
 import com.example.noteapp.core.util.UiEvent
 import com.example.noteapp.databinding.FragmentNotesBinding
 import com.example.noteapp.feature_note.domain.adapter.NotesAdapter
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
-import java.lang.RuntimeException
 
 @AndroidEntryPoint
 class NotesFragment: Fragment(R.layout.fragment_notes) {

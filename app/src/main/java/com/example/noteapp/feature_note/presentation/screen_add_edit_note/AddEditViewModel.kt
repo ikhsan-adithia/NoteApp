@@ -1,10 +1,13 @@
 package com.example.noteapp.feature_note.presentation.screen_add_edit_note
 
 import android.util.Log
+import android.widget.RadioGroup
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.noteapp.R
 import com.example.noteapp.core.util.UiEvent
+import com.example.noteapp.feature_note.domain.model.InvalidNoteException
 import com.example.noteapp.feature_note.domain.model.Note
 import com.example.noteapp.feature_note.domain.use_case.NoteUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,7 +21,7 @@ class AddEditViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow(AddEditState())
+    val _state = MutableStateFlow(AddEditState())
     val state: StateFlow<AddEditState> = _state
 
     private val _noteColor = MutableStateFlow(Note.noteColors.random())
@@ -41,7 +44,52 @@ class AddEditViewModel @Inject constructor(
                 }
             }
         }
+    }
 
+//    fun onEvent(event: AddEditEvent) {
+//        when (event) {
+//            is AddEditEvent.TitleChange -> {
+//                Log.e("AddEditViewModel", "onEvent: ${event.noteTitle}")
+//            }
+//            is AddEditEvent.ContentChange -> {}
+//            is AddEditEvent.ColorChange -> {}
+//            is AddEditEvent.SaveNote -> {}
+//        }
+//    }
+
+    fun saveNote() {
+        viewModelScope.launch {
+            try {
+                state.value.note.also { note ->
+                    noteUseCases.addNoteUseCase(Note(
+                        title = note.title,
+                        content = note.content,
+                        timestamp = System.currentTimeMillis(),
+                        color = noteColor.value,
+                        id = currentNoteId
+                    ))
+                }
+            } catch (e: InvalidNoteException) {
+                _uiEvent.emit(UiEvent.ShowSnackbar(e.message ?: "Couldn't save note"))
+            }
+        }
+    }
+
+    fun onColorChange(radioGroup: RadioGroup, id: Int) {
+        when (id) {
+            R.id.rb_blue -> {
+                _noteColor.value = R.color.rb_blue
+            }
+            R.id.rb_purple -> {
+                _noteColor.value = R.color.rb_purple
+            }
+            R.id.rb_green -> {
+                _noteColor.value = R.color.rb_green
+            }
+            R.id.rb_magenta -> {
+                _noteColor.value = R.color.rb_magenta
+            }
+        }
     }
 
 }

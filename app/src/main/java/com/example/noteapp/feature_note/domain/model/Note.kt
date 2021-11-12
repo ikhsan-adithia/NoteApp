@@ -9,8 +9,8 @@ import java.lang.Exception
 data class Note(
     @PrimaryKey
     val id: Int? = null,
-    val title: String,
-    val content: String,
+    var title: String,
+    var content: String,
     val timestamp: Long,
     val color: Int
 ) {

@@ -27,8 +27,5 @@ fun radioGroupNoteColor(radioGroup: RadioGroup, noteColor: Int) {
         R.color.rb_magenta -> {
             radioGroup.check(R.id.rb_magenta)
         }
-        else -> {
-            radioGroup.check(R.id.rb_purple)
-        }
     }
 }
